@@ -1,7 +1,7 @@
-https://helloworldwuyuze.github.io/project/2024/03/25/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96/
-https://helloworldwuyuze.github.io/project/2024/03/25/At_dp/
-https://helloworldwuyuze.github.io/project/2024/03/25/%E6%8D%A2%E6%A0%B9DP/
-https://helloworldwuyuze.github.io/project/2024/03/25/hello-world/
-https://helloworldwuyuze.github.io/project
-https://helloworldwuyuze.github.io/project/tags/%E9%A2%98%E8%A7%A3%E7%AC%94%E8%AE%B0/
-https://helloworldwuyuze.github.io/project/tags/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/
+http://example.com/2024/03/25/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96/
+http://example.com/2024/03/25/At_dp/
+http://example.com/2024/03/25/%E6%8D%A2%E6%A0%B9DP/
+http://example.com/2024/03/25/hello-world/
+http://example.com/
+http://example.com/tags/%E9%A2%98%E8%A7%A3%E7%AC%94%E8%AE%B0/
+http://example.com/tags/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/
