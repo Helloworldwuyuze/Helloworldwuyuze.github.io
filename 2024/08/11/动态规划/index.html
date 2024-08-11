@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang="zh_CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>动态规划（背包） | Helloworldwuyuze's Blog</title><meta name="author" content="Wu Yuze"><meta name="copyright" content="Wu Yuze"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="动态规划 动态规划有两个要点，就是状态和转移。  状态，很重要的一个点是它能够清晰地描述一个子问题。也就是说我们能够根据我们记录下来的东西能够方便得让我们知道我们在解决什么，要求什么，并且能够通过之前的状态转移过来。在满足这些条件的情况下，我们就可以进一步考虑我们到底需不需要记录这么多状态，是不是可以少记录一些来降低复杂度。 转移，就是状态与状态之间的关系。我们需要从一些已知的状态求出一个未知的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态规划（背包）">
+<meta property="og:url" content="http://example.com/2024/08/11/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/index.html">
+<meta property="og:site_name" content="Helloworldwuyuze&#39;s Blog">
+<meta property="og:description" content="动态规划 动态规划有两个要点，就是状态和转移。  状态，很重要的一个点是它能够清晰地描述一个子问题。也就是说我们能够根据我们记录下来的东西能够方便得让我们知道我们在解决什么，要求什么，并且能够通过之前的状态转移过来。在满足这些条件的情况下，我们就可以进一步考虑我们到底需不需要记录这么多状态，是不是可以少记录一些来降低复杂度。 转移，就是状态与状态之间的关系。我们需要从一些已知的状态求出一个未知的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406">
+<meta property="article:published_time" content="2024-08-11T13:46:21.000Z">
+<meta property="article:modified_time" content="2024-08-11T13:49:25.312Z">
+<meta property="article:author" content="Wu Yuze">
+<meta property="article:tag" content="算法笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406"><link rel="shortcut icon" href="/img/jwz1.jpg"><link rel="canonical" href="http://example.com/2024/08/11/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '动态规划（背包）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2024-08-11 21:49:25'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Helloworldwuyuze's Blog" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Helloworldwuyuze's Blog"><img class="site-icon" src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image"/><span class="site-name">Helloworldwuyuze's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">动态规划（背包）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-11T13:49:25.312Z" title="Updated 2024-08-11 21:49:25">2024-08-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="动态规划（背包）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="动态规划"><a href="#动态规划" class="headerlink" title=" 动态规划 "></a><center> 动态规划 </center></h1><p>动态规划有两个要点，就是状态和转移。</p>
+<ul>
+<li><strong>状态</strong>，很重要的一个点是它能够清晰地描述一个子问题。也就是说我们能够根据我们记录下来的东西能够方便得让我们知道我们在解决什么，要求什么，并且能够通过之前的状态转移过来。在满足这些条件的情况下，我们就可以进一步考虑我们到底需不需要记录这么多状态，是不是可以少记录一些来降低复杂度。</li>
+<li><strong>转移</strong>，就是状态与状态之间的关系。我们需要从一些已知的状态求出一个未知的状态，这个过程就叫转移。转移的快慢很大一部分取决于转移的技巧。例如通过寻找最优决策点的时候有斜率优化、单调队列优化或者四边形不等式优化。有时候，并不是所有的状态都可以通过已知的状态转移过来，很多时候状态是一种类似于方程的形式，这时候就可以使用高斯消元来解决问题，只是复杂度会上升为三次。</li>
+</ul>
+<h1 id="背包"><a href="#背包" class="headerlink" title="背包"></a>背包</h1><p>相信背包一定是大部分 $\text{OIer}$ 最早接触的一类动态规划问题，但我发现我到最近才对它进行系统的学习，实在是太弱了。它的核心问题是有限制条件的选择物品。而 <strong>物品</strong> 这个概念也可以被抽象化，一般地，一个或一些物品可以看成一个 <strong>价值</strong> 对于 <strong>重量</strong> 的函数 $v &#x3D; f(w)$。但，物品也可以是很特殊的，例如 $\text{01背包}$ 中物品就是一个价值为 $val$ 重量为 $weight$ 的东西。但它也可以表示成一般的形式，即：</p>
+<p>$$v&#x3D;\begin{cases}val,&amp;w&#x3D;weight\0,&amp;\text{otherwise}\end{cases}$$</p>
+<p>除了直接的形式以外，还有很多题目会隐晦的考察背包问题，这就需要我们将问题的本质抓出来。</p>
+<h2 id="01-背包"><a href="#01-背包" class="headerlink" title="$01$ 背包"></a>$01$ 背包</h2><p>$01$ 背包其实是所有背包问题的本质。但我们先不讲它为什么是本质，我们先考虑怎么做这个问题。</p>
+<h3 id="Sol"><a href="#Sol" class="headerlink" title="Sol"></a>Sol</h3><p>首先考虑状态设计。考虑到先选什么后选什么并不会影响最终的答案，因此我们只需设选择了前 $i$ 个即可。另外，显然目前背包的大小也会影响我们能够选什么。这样，我们就有了一个初步的状态设计：在背包大小为 $j$ 的时候选择第 $i$ 个物品的最大价值。</p>
+<p>下面开始考虑转移，显然，我在一个状态 $i,j$ 有两种选择，一种是选这个物品，一种是不选，于是就有转移：</p>
+<p>$$f_{i,j}&#x3D;\max{f_{i-1,j},f_{i-1,j-w}+v}$$</p>
+<p>于是我们就得到了一个时间复杂度和空间复杂度都为 $O(nV)$ 的算法。</p>
+<p>但是，我们注意到这里第 $i$ 层只与 $i-1$ 层有关，因此我们可以开滚动数组来滚掉一维。另外，我们发现后面的状态更新只与前面的有关，因此我们完全可以不要前一维而直接从后往前进行更新，这样就可以完成 $O(V)$ 的空间复杂度，转移方程为：</p>
+<p>$$f_{i} &#x3D; \max{f_i, f_{i-w}+v}$$</p>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(V, w[i], -<span class="number">1</span>):</span><br><span class="line">		f[i] = <span class="built_in">max</span>(f[i-w[i]]+v[i], f[i])</span><br></pre></td></tr></table></figure>
+
+<h2 id="完全背包"><a href="#完全背包" class="headerlink" title="完全背包"></a>完全背包</h2><p>与 $01背包$ 不同的是，这里的物品不一定只取一次，而是可以无限制地拿取。这样的物品写成一般的形式就是：</p>
+<p>$$v&#x3D;\begin{cases}k\times val,&amp;w&#x3D;k\times weight,k\in \mathbb{N}\0,&amp;\text{otherwise}\end{cases}$$</p>
+<h3 id="Sol-1"><a href="#Sol-1" class="headerlink" title="Sol"></a>Sol</h3><h4 id="O-nV-2-做法"><a href="#O-nV-2-做法" class="headerlink" title="$O(nV^2)$ 做法"></a>$O(nV^2)$ 做法</h4><p>显然，我们除了知道现在背包的容量、取到了哪个物品以外，还需要知道现在的物品到底取多少件，枚举出来之后就很容易得到转移：</p>
+<p>$$f_{i,j}&#x3D;\max_{k&#x3D;0}^{\infty}{f_{i-1,j-k\times w}+k\times v}$$</p>
+<p>这样，对于每一件物品，复杂度是 $O(V\times \frac{V}{w})$，因此总的时间复杂度就是 $O(V^2\sum\frac{1}{w})$，很容易被卡到 $O(nV^2)$。</p>
+<p>但是我们考虑，这其实相当于把这个物品拆成很多物品然后做 $01背包$。也就是说，一般地把</p>
+<p>$$v&#x3D;\begin{cases}k\times val,&amp;w&#x3D;k\times weight,k\in \mathbb{N}\0,&amp;\text{otherwise}\end{cases}$$</p>
+<p>拆成：</p>
+<p>$$v_i&#x3D;\begin{cases}i\times val,&amp;w&#x3D;i\times weight\0,&amp;\text{otherwise}\end{cases}$$</p>
+<p><strong>伪代码</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,n):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,V):</span><br><span class="line">		<span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,V/w[i]):</span><br><span class="line">			f[i][j]=<span class="built_in">max</span>(f[i-<span class="number">1</span>][j-k*w[i]]+k*v[i],f[i][j]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="O-nV-log-V-做法"><a href="#O-nV-log-V-做法" class="headerlink" title="$O(nV\log V)$ 做法"></a>$O(nV\log V)$ 做法</h4><p>上述做法其实就是选择一定数量的这个物品，那么这个数量一定可以用二进制表示，也就是说，我们把这个物品拆成 $\log V$ 个，每个表示买 $1$ 个、$2$ 个、$\dots$、$2^{\left\lfloor\log V\right\rfloor}$ 个物品，显然任意数量可以用这些物品表示出来，于是做 $01 背包$ 即可。</p>
+<p>形式化的，我们把</p>
+<p>$$v&#x3D;\begin{cases}k\times val,&amp;w&#x3D;k\times weight,k\in \mathbb{N}\0,&amp;\text{otherwise}\end{cases}$$</p>
+<p>拆成：</p>
+<p>$$v_i&#x3D;\begin{cases}2^i\times val,&amp;w&#x3D;2^i\times weight\0,&amp;\text{otherwise}\end{cases}$$</p>
+<p>即可。</p>
+<p><strong>伪代码</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, log(V)):</span><br><span class="line">	v[++idx] = (<span class="number">1</span>&lt;&lt;t)*v[i], w[idx] = (<span class="number">1</span>&lt;&lt;t)*w[i]</span><br></pre></td></tr></table></figure>
+
+<h4 id="O-nV-做法"><a href="#O-nV-做法" class="headerlink" title="$O(nV)$ 做法"></a>$O(nV)$ 做法</h4><p>更加快地，我们可以做到时间 $O(nV)$，空间 $O(V)$。</p>
+<p>具体地，我们考虑，如果按照 $01背包$ 的做法，但是从前往后地考虑完全背包，显然，如果当前选这个物品更优，我们直接选择即可，然后更新当前的值。当继续更新后面的节点的时候，我们就可以直接继承当前的值，如果继续选择就可以表示选两个、三个以及更多的情形。</p>
+<p>这就相当于，我们已经选择了这个物品并加入了贡献，然后继续考虑下一个物品，考虑的时候就正好继承了上一次选的状态。</p>
+<p><strong>伪代码</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, V):</span><br><span class="line">		f[j] = <span class="built_in">max</span>(f[j], f[j-w[i]]+v[i])</span><br></pre></td></tr></table></figure>
+
+<h2 id="多重背包"><a href="#多重背包" class="headerlink" title="多重背包"></a>多重背包</h2><p>与完全背包又不一样，多重背包限制了每个物品最多拿多少次，而非可以无限拿，这问题又难了一些。</p>
+<p>同样地，我们依旧可以形式化表示这些物品：</p>
+<p>$$v&#x3D;\begin{cases}k\times val,&amp;w&#x3D;k\times weight,k\in[0,m]\cap\mathbb{Z}\0,&amp;\text{otherwise}\end{cases}$$</p>
+<h3 id="Sol-2"><a href="#Sol-2" class="headerlink" title="Sol"></a>Sol</h3><p>显然，和完全背包一样，我们可以枚举选择多少个该物品。这里不详细展开。</p>
+<p>又显然，和完全背包一样，我们可以把选择的物品二进制表示出来。但注意这里二进制拆分不能够把那些大于 $m$ 的状态也表示出来，因此，我们只能取到 $2^{\left\lfloor\log m\right\rfloor-1}$，剩下的我们就再取一个 $m-2^{\left\lfloor\log m\right\rfloor}+1$ 即可。</p>
+<p>这里，我们着重讲一下 $O(nV)$ 做法。</p>
+<p>显然，根据完全背包的做法，我们发现一个状态 $j$ 可以从 $j-w$，$j-2w$，$\dots$，$j-kw$ 转移过来，而这些数有一个共同特点，就是关于 $w$ 同余。而我们也不难证明，所有的关于 $w$ 余数不同的值都不能在这一层相互转移，于是，我们就可以枚举余数转移。</p>
+<p>具体地，关于每一个余数，我们发现一个点 $j$ 只能从 $j-w$ 一直到 $j-mw$ 中最大的转移过来，这显然符合单调队列优化的条件。因此，我们在转移的时候使用一个单调队列优化就可以 $O(nV)$ 通过这个问题。</p>
+<p>但是，还有一个细节。就是每一次我们算的 $f_j$ 不能直接用到单调队列中，因为这些值已经加上了我们的贡献 $kv$，因此，加入单调队列的应该是 $f_j-kv$。</p>
+<h4 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">	<span class="built_in">int</span> res = <span class="built_in">min</span>(m, V/w);</span><br><span class="line">	<span class="keyword">for</span> d <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, w-<span class="number">1</span>):</span><br><span class="line">		head = <span class="number">0</span>, tail = <span class="number">1</span>;</span><br><span class="line">		<span class="built_in">int</span> lim = (V-d)/w;</span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, lim):</span><br><span class="line">			<span class="keyword">while</span> head &lt;= tail <span class="keyword">and</span> f[j*w+d]-j*v &gt;= q[tail]:</span><br><span class="line">				--tail;</span><br><span class="line">			q[++tail] = f[j*w+d]-j*v, num[tail] = j;</span><br><span class="line">			<span class="keyword">while</span> head &lt;= tail <span class="keyword">and</span> num[head]+res &lt; j:</span><br><span class="line">				++head;</span><br><span class="line">			f[j*w+d]=q[head]+j*v;</span><br></pre></td></tr></table></figure>
+
+<h2 id="混合背包"><a href="#混合背包" class="headerlink" title="混合背包"></a>混合背包</h2><p>显然，上述的三种背包混合起来就都可以转化成多重背包问题。完全背包直接转化成数量只有 $\frac{V}{w}$ 即可。</p>
+<h2 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h2><p>在完成上述三种背包之后，我们对于背包问题又有了一个基本的了解。进一步拓展，我们发现，如果我们最终求出了动态规划的数组 $f_V$ 这是不是也可以看成一种一般意义上的物品。它表示为一个函数</p>
+<p>$$v&#x3D;f_w$$</p>
+<p>这样，我们就能够接着完成一些接下来的背包：</p>
+<h2 id="分组背包"><a href="#分组背包" class="headerlink" title="分组背包"></a>分组背包</h2><h3 id="Sol-3"><a href="#Sol-3" class="headerlink" title="Sol"></a>Sol</h3><p>与之前不同的是，现在的物品多了一些组别。而每个组内只能选择一个物品。</p>
+<p>状态设计上，因为每个组只能选择一个，因此我们考虑 $f_{i,j}$ 表示前 $i$ 组容量为 $j$ 时的最大价值。状态确实很好地描述了一个子问题，但是我们仍需要考虑的是怎么保证每个组只选一个。</p>
+<p>显然，我们仍然需要从大到小枚举容量 $V$，然后，按照一般的 $01背包$ 的思路，我们现在要考虑选择或者不选择。那么，按照分组背包的思路，我们是不是应该考虑选择哪个更合适呢？因此，我们不难得出状态转移方程：</p>
+<p>$$f_j&#x3D;\max_{k\in group_i}{f_{j-w_k}+v_k}$$</p>
+<h3 id="伪代码-2"><a href="#伪代码-2" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(V, <span class="number">0</span>, -<span class="number">1</span>):</span><br><span class="line">		<span class="keyword">for</span> k:group[i]:</span><br><span class="line">			f[j] = <span class="built_in">max</span>(f[j], f[j-w[k]]+v[k]);</span><br></pre></td></tr></table></figure>
+
+<p>结合我们上文所说的，其实这里的每个组可以被看成一个广义上的物品，我们假设组内有 $s$ 个物品，价值与重量分别为 $v_i$ 和 $w_i$，那么这个物品就可以被写成函数的一般形式：</p>
+<p>$$v&#x3D;\begin{cases}v_i, &amp;w&#x3D;w_i,i\in[1,s]\cap \mathbb{Z}\0,&amp;\text{otherwise}\end{cases}$$</p>
+<p>而这里就是这个一般性的物品在 $01背包$ 时的解法。</p>
+<p>显然，这种情况下，如果是完全背包，就没有了组内的限制，显然直接把组拆开即可。</p>
+<p>那么我们继续跟着这个思路，如果我们给每个组的背包限制一个容量，那么我们就可以根据一般物品的思路，现在每个组内求出每个组的函数 $v(w)$，然后把 $w$ 重量拆成特殊意义的物品，即每个物品的重量、价值可以表示成二元组 $(w,v(w))$。这样，就可以继续使用背包完成了。</p>
+<p>高维背包我不想讲，无非就是 $DP$ 数组上多加几维罢辽。</p>
+<h2 id="小节-1"><a href="#小节-1" class="headerlink" title="小节"></a>小节</h2><p>我们在探讨完一般的背包问题之后，会发现一个有意思的现象。对于刚开始给出的物品 $(w_i, v_i)$，我们可以写成一个函数：</p>
+<p>$$f(w) &#x3D; \begin{cases}v_i, &amp;w&#x3D;w_i\0,&amp;\text{otherwise}\end{cases}$$</p>
+<p>然后，我们通过动态规划之后，把它重新整合成了另一种一般的物品，即最终的动态规划数组 $f_w$。我们发现，在一般的条件下，我们只需要这一维数组就足以描述一个子问题。</p>
+<h2 id="进阶：01背包-k-优解"><a href="#进阶：01背包-k-优解" class="headerlink" title="进阶：01背包 $k$ 优解"></a>进阶：01背包 $k$ 优解</h2><h3 id="Sol-4"><a href="#Sol-4" class="headerlink" title="Sol"></a>Sol</h3><p>现在，我们已经不满足于只知道最优解，我们想知道，如果我们有很多人，也就是说，在每个人选的物品不能完全相同的情况下，第 $k$ 个人的最优解是什么。</p>
+<p>很显然，最开始的 $f_{j}$ 的状态已经不能满足我们对于新的题目的追求，但是，它仍然是必要的，只不过不充分。既然要求我们求出 $k$ 优解，那么我们不妨设 $f_{j,k}$ 表示背包容量为 $j$ 时的 $k$ 优解。</p>
+<p>然后，我们来想想如何转移。对于现在枚举的物品 $i$ 和背包容量 $j$，那么这个背包的容量就应该由 $j-w_i$ 转移过来。而我们要求的是前 $k$ 优解，那么容量为 $j$ 时的 $k$ 优解一定不比 $j-w_i$ 层的劣。根据原来的 $01背包$，会产生 $f_{j,1},\dots,f_{j,k}$ 这些不同的背包价值以及更新上来的 $f_{j-w_i,1}+v_i,\dots,f_{j-w_{i},k}+v_i$ 总共 $2k$ 种价值。这些价值一定包含前 $k$ 优解，而我们又知道 $f_{j}$ 是单调不升的（因为最优解一定比次优解优，以此类推），因此使用类似于归并的方法可以使得转移一次复杂度变成 $O(k)$，因此总的复杂度就是时间 $O(knV)$，空间 $O(kn)$。</p>
+<h3 id="正确性证明"><a href="#正确性证明" class="headerlink" title="正确性证明"></a>正确性证明</h3><p>所以为什么前 $k$ 优解就一定包含在这 $2k$ 个状态中呢？这就像询问为什么朴素的 $01背包$ 的最优解一定在 $f_j$ 与 $f_{j-w_i}+v_i$ 之中一样。对于背包容量为 $j$ 的问题，在物品 $i$ 已经枚举确定的情况下，我们能且只能通过 $j-w_i$ 的背包容量转移过来，而在 $j-w_i$ 的背包容量的情况下，比 $k$ 优解更劣的解一定不会对当前产生贡献，因为 $f_{j-w_i,1}+v_i$ 到 $f_{j-w_i,k}+v_i$ 已经至少有 $k$ 个，而 $f_{j-w_i,k}\ge f_{j-w_i,k+1}$。同理我们可以知道继承上一层的 $j$ 容量状态最多也只到 $k$ 优。因此这 $2k$ 个状态就决定了现在的 $f_{j,1}$ 到 $f_{j,k}$。</p>
+<h3 id="Code【P1858-多人背包】"><a href="#Code【P1858-多人背包】" class="headerlink" title="Code【P1858 多人背包】"></a><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1858">Code【P1858 多人背包】</a></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">200</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> M = <span class="number">5e3</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> K = <span class="number">50</span> + <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> v[N], w[N], f[M][K], n, k, m, tmp[K];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>), cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;k&gt;&gt;m&gt;&gt;n;</span><br><span class="line">	<span class="built_in">memset</span>(f, <span class="number">-0x3f</span>, <span class="built_in">sizeof</span>(f));</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)	cin&gt;&gt;w[i]&gt;&gt;v[i];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=m;j&gt;=w[i];--j)&#123;</span><br><span class="line">			<span class="type">int</span> x = <span class="number">1</span>, y = <span class="number">1</span>, cnt = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">while</span>(cnt &lt;= k)&#123;</span><br><span class="line">				<span class="keyword">if</span>(f[j-w[i]][y] + v[i] &gt; f[j][x])	tmp[++cnt] = f[j-w[i]][y++]+v[i];</span><br><span class="line">				<span class="keyword">else</span>	tmp[++cnt] = f[j][x++];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> x=<span class="number">1</span>;x&lt;=k;++x)	f[j][x] = tmp[x];</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=k;++i)	ans += f[m][i];</span><br><span class="line">	cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">Wu Yuze</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/08/11/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">http://example.com/2024/08/11/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/">算法笔记</a></div><div class="post_share"><div class="social-share" data-image="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/08/11/MoTeam/" title="莫队"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">莫队</div></div></a></div><div class="next-post pull-right"><a href="/2024/08/11/%E5%AE%B9%E6%96%A5/" title="容斥"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">容斥</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2024/08/11/01trie%20%E8%BF%9B%E9%98%B6/" title="01-trie 进阶"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-11</div><div class="title">01-trie 进阶</div></div></a></div><div><a href="/2024/05/23/01trie/" title="01-trie"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-23</div><div class="title">01-trie</div></div></a></div><div><a href="/2024/03/25/DUJiao%20Sum/" title="杜教筛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-25</div><div class="title">杜教筛</div></div></a></div><div><a href="/2024/05/05/FFT/" title="快速傅里叶变换"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-05</div><div class="title">快速傅里叶变换</div></div></a></div><div><a href="/2024/08/11/MoTeam/" title="莫队"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-11</div><div class="title">莫队</div></div></a></div><div><a href="/2024/07/01/Mobius%20Inversion/" title="莫比乌斯反演"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-01</div><div class="title">莫比乌斯反演</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Wu Yuze</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-number">1.</span> <span class="toc-text"> 动态规划 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E5%8C%85"><span class="toc-number">2.</span> <span class="toc-text">背包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#01-%E8%83%8C%E5%8C%85"><span class="toc-number">2.1.</span> <span class="toc-text">$01$ 背包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol"><span class="toc-number">2.1.1.</span> <span class="toc-text">Sol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="toc-number">2.1.2.</span> <span class="toc-text">伪代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85"><span class="toc-number">2.2.</span> <span class="toc-text">完全背包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">Sol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#O-nV-2-%E5%81%9A%E6%B3%95"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">$O(nV^2)$ 做法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#O-nV-log-V-%E5%81%9A%E6%B3%95"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">$O(nV\log V)$ 做法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#O-nV-%E5%81%9A%E6%B3%95"><span class="toc-number">2.2.1.3.</span> <span class="toc-text">$O(nV)$ 做法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85"><span class="toc-number">2.3.</span> <span class="toc-text">多重背包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol-2"><span class="toc-number">2.3.1.</span> <span class="toc-text">Sol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-1"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">伪代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E8%83%8C%E5%8C%85"><span class="toc-number">2.4.</span> <span class="toc-text">混合背包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E8%8A%82"><span class="toc-number">2.5.</span> <span class="toc-text">小节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E8%83%8C%E5%8C%85"><span class="toc-number">2.6.</span> <span class="toc-text">分组背包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol-3"><span class="toc-number">2.6.1.</span> <span class="toc-text">Sol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-2"><span class="toc-number">2.6.2.</span> <span class="toc-text">伪代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E8%8A%82-1"><span class="toc-number">2.7.</span> <span class="toc-text">小节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%EF%BC%9A01%E8%83%8C%E5%8C%85-k-%E4%BC%98%E8%A7%A3"><span class="toc-number">2.8.</span> <span class="toc-text">进阶：01背包 $k$ 优解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol-4"><span class="toc-number">2.8.1.</span> <span class="toc-text">Sol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E7%A1%AE%E6%80%A7%E8%AF%81%E6%98%8E"><span class="toc-number">2.8.2.</span> <span class="toc-text">正确性证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Code%E3%80%90P1858-%E5%A4%9A%E4%BA%BA%E8%83%8C%E5%8C%85%E3%80%91"><span class="toc-number">2.8.3.</span> <span class="toc-text">Code【P1858 多人背包】</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/01trie%20%E8%BF%9B%E9%98%B6/" title="01-trie 进阶">01-trie 进阶</a><time datetime="2024-08-11T13:48:21.000Z" title="Created 2024-08-11 21:48:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86/" title="整体二分">整体二分</a><time datetime="2024-08-11T13:47:21.000Z" title="Created 2024-08-11 21:47:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/2024SDSC%20Day%205%20Sol/" title="2024 SDSC Day 5 Sol">2024 SDSC Day 5 Sol</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/Beakjoon19523/" title="Beakjoon19523 Sol">Beakjoon19523 Sol</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/MoTeam/" title="莫队">莫队</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Wu Yuze</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div><div id="footer-banner"><div class="footer-banner-links"><div class="footer-banner-left"><span id="footer-banner-tips"></span><script type="text/javascript" src="https://cdn.bootcss.com/typed.js/2.0.5/typed.js"></script><script type="text/javascript">var typed = new Typed("#footer-banner-tips", {
+            strings: ['你会发现世界新的尽头，下雨会有彩色的洋流，珊瑚里有被浇灌的梦，街角有海獭等着你的糖球','可是啊，我却，却愿意去相信，最渺小最温柔最柔软最无畏的你','借一方三九天里咧咧暖阳，熔这茫茫人间刺骨凉','也路过，旋转的星空；发现光颜色万种，风吹来云在翻涌，都抵不过你的笑容','我也想，能陪你一起走啊，直到这世界崩塌。可是啊，走过长夜的你，不再需要被牵挂','有些遗憾要学会放下，生活无需太重的行囊','既然相遇始终来自于时光的馈赠，那么离别时也一定要微笑着回忆放心中','可以哭了，可以笑着说结束了','也敬你一杯，因为值得','一定是你来时太小心，怕我再想起你','无名的人啊，我敬你一杯酒，敬你的沉默，和每一声怒吼','我不再迷茫，思念是唯一的方向。满天的星光，有一颗是你的愿望。','May all the bueaty be blessed.'],
+            startDelay: 200,
+            backDelay: 2000,
+            typeSpeed: 100,
+            loop: true,
+            backSpeed: 20
+            })
+</script></div><div class="footer-banner-right"><a class="footer-banner-link" href="/rss/" data-pjax-state="data-pjax-state">订阅</a><a class="footer-banner-link" href="/update/" data-pjax-state="data-pjax-state">主题</a><a class="footer-banner-link" href="https://www.beian.miit.gov.cn/" target="_blank">粤 ICP 备 20043865 号</a></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="E=mc^2,lol,Hello, world!,e^iπ+1=0,F=ma,AC,Na" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

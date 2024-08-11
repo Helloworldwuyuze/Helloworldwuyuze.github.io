@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="zh_CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>整体二分 | Helloworldwuyuze's Blog</title><meta name="author" content="Wu Yuze"><meta name="copyright" content="Wu Yuze"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="整体二分一时间竟然不知道怎么切入，我们不妨按照 $\text{OI-Wiki}$ 的思路引入罢。 静态全局第 $k$ 小Ques 1 询问一次全局第 $k$ 小。  这样的解法是简单的。我们可以直接排序然后访问数组第 $k$ 个位置。也可以考虑二分，但二分要求我们快速知道 $\le x$ 的数有多少个，于是我们就可以使用树状数组（离散化）或者线段树（离散化或动态开点）维护即可。 注意，我们这里称">
+<meta property="og:type" content="article">
+<meta property="og:title" content="整体二分">
+<meta property="og:url" content="http://example.com/2024/08/11/%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86/index.html">
+<meta property="og:site_name" content="Helloworldwuyuze&#39;s Blog">
+<meta property="og:description" content="整体二分一时间竟然不知道怎么切入，我们不妨按照 $\text{OI-Wiki}$ 的思路引入罢。 静态全局第 $k$ 小Ques 1 询问一次全局第 $k$ 小。  这样的解法是简单的。我们可以直接排序然后访问数组第 $k$ 个位置。也可以考虑二分，但二分要求我们快速知道 $\le x$ 的数有多少个，于是我们就可以使用树状数组（离散化）或者线段树（离散化或动态开点）维护即可。 注意，我们这里称">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406">
+<meta property="article:published_time" content="2024-08-11T13:47:21.000Z">
+<meta property="article:modified_time" content="2024-08-11T13:46:16.795Z">
+<meta property="article:author" content="Wu Yuze">
+<meta property="article:tag" content="算法笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406"><link rel="shortcut icon" href="/img/jwz1.jpg"><link rel="canonical" href="http://example.com/2024/08/11/%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '整体二分',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2024-08-11 21:46:16'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Helloworldwuyuze's Blog" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Helloworldwuyuze's Blog"><img class="site-icon" src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image"/><span class="site-name">Helloworldwuyuze's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">整体二分</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-08-11T13:47:21.000Z" title="Created 2024-08-11 21:47:21">2024-08-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-11T13:46:16.795Z" title="Updated 2024-08-11 21:46:16">2024-08-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="整体二分"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="整体二分"><a href="#整体二分" class="headerlink" title="整体二分"></a>整体二分</h1><p>一时间竟然不知道怎么切入，<del>我们不妨按照 $\text{OI-Wiki}$ 的思路引入罢。</del></p>
+<h2 id="静态全局第-k-小"><a href="#静态全局第-k-小" class="headerlink" title="静态全局第 $k$ 小"></a>静态全局第 $k$ 小</h2><h3 id="Ques-1"><a href="#Ques-1" class="headerlink" title="Ques 1"></a>Ques 1</h3><blockquote>
+<p>询问一次全局第 $k$ 小。</p>
+</blockquote>
+<p>这样的解法是简单的。我们可以直接排序然后访问数组第 $k$ 个位置。也可以考虑二分，但二分要求我们快速知道 $\le x$ 的数有多少个，于是我们就可以使用树状数组（离散化）或者线段树（离散化或动态开点）维护即可。</p>
+<p>注意，我们这里称 $kth$ 的算法为 <strong>二分</strong>，这是因为我们二分 $kth$ 是多少，然后再根据 $\sum\limits_{i&#x3D;1}^n[a_i\le mid]$ 来判断是 $l&#x3D;mid$ 还是 $r&#x3D;mid$。因此，区间 $kth$ 的本质是一种二分。</p>
+<h3 id="Ques-2"><a href="#Ques-2" class="headerlink" title="Ques 2"></a>Ques 2</h3><blockquote>
+<p>询问多次全局第 $k$ 小（ $k$ 不同）。</p>
+</blockquote>
+<p>显然，我们仍然可以排个序然后按顺序访问不同的 $k$，但同样，我们可以使用二分的方法。</p>
+<p>考虑到二分答案的本质是把一个问题的答案不断缩小直至可以确定。而对于多个问题，这显然也不是问题。我们可以将这许多次询问放在一起，然后统一枚举一个 $mid$ 作为答案，然后根据 $\sum\limits_{i&#x3D;1}^n[a_i\le mid]$ 的值与 $k$ 的关系将这些问题 <strong>分流</strong>，偏小的分到左边，偏大的分到右边，然后分别继续枚举各自的 $mid$，再继续分流。这其实在本质上就是一种分治的做法，但是仍然具有二分的枚举答案的特点，简称就是将二分与分治结合起来，通过二分得到的反馈来进行分治。因为二分最多分 $\log n$ 层，而每一层又都是只需要处理 $q$ 个问题，故复杂度就是 $q\log n$。</p>
+<h2 id="动态全局第-k-小"><a href="#动态全局第-k-小" class="headerlink" title="动态全局第 $k$ 小"></a>动态全局第 $k$ 小</h2><p>这个显然就不区分多次询问还是一次询问了，但是我们仍然分不同的解法。</p>
+<h3 id="Sol-1"><a href="#Sol-1" class="headerlink" title="Sol 1"></a>Sol 1</h3><p>显然，线段树或者平衡树可以很好地解决这个问题。直接在值域线段树上单点修改整体 $kth$ 即可。</p>
+<h3 id="Sol-2"><a href="#Sol-2" class="headerlink" title="Sol 2"></a>Sol 2</h3><p>如果我们继续沿着刚刚的思路，把所有的操作放在一起处理，我们能不能解决这个问题呢？</p>
+<p>也许你会说，刚刚是没有修改的，我们放在一起可以全部处理询问，但是如果有了修改，我们怎么样确定修改应该被分到左边还是右边呢？显然有修改是会既影响左边又影响右边的。</p>
+<p>但是，我们回想一下线段树上 $kth$ 的过程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">kth</span><span class="params">(<span class="type">int</span> p,<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l == r)	<span class="keyword">return</span> l;</span><br><span class="line">    <span class="type">int</span> mid = l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(s[ls[p]] &gt;= k)	<span class="keyword">return</span> <span class="built_in">kth</span>(ls[p], l, mid, k);</span><br><span class="line">    <span class="keyword">else</span>	<span class="keyword">return</span> <span class="built_in">kth</span>(rs[p], mid+<span class="number">1</span>, r, k-s[ls[p]]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们悄悄的发现了，如果 $kth$ 到了右子树，我们会把左子树的所有东西都减掉，也就是这里的 <code>k-s[ls[p]]</code>。那么，我们在整体二分的时候，能不能按照同样的思路，如果一个修改的值 $\le mid$，或者说这个修改 $x\ k$ 中 $k\le mid$，它显然也会影响到那些被分到右边的查询，但是如果它们被分到右边，那么就有它们的 $ans&gt;mid$，也就是说，无论如何这里的 $k$ 就只能影响这些询问一次了，因此直接在这里减掉 $1$ 即可。同理，如果一个询问要被分到左边，且有一个修改 $x,k$ 中 $k&gt;mid$，那么因为这询问被分到了左边，因此它的 $ans\le mid$，故无论如何右边的那个修改都与它无缘，它们擦肩而过就分道扬镳，再也见不着了。</p>
+<p>那么在此基础之上，我们保证分到同一边的操作按照编号大小排序（这是不是有点像归并的逆过程），这就保证了在该操作之前的操作一定会先执行，只要它们被分到了一个地方。</p>
+<p>具体地，我们在 <code>solve</code> 函数里面传入参数 <code>L,R,l,r</code>，分别表示操作的左、右端点和目前二分的左、右端点。这样我们令 <code>mid=l+r&gt;&gt;1</code>，作为本次二分的钦定答案。然后：</p>
+<ul>
+<li>对于修改操作：</li>
+<li><ul>
+<li>如果有 $k\le mid$，那么我们就进行这次修改（也就是令一个计数器 <code>+1</code>），并且将它分到左边。</li>
+<li>否则，我们不进行这次修改，将它放到右边。</li>
+</ul>
+</li>
+<li>对于查询操作：</li>
+<li>我们首先看看枚举到这个询问的时候进行了多少次 $\le mid$ 的修改（也就是访问那个计数器），记它为 $t$，然后：</li>
+<li><ul>
+<li>如果有 $t\ge k$，那么，这就说明比 $mid$ 小的数已经比 $k$ 个要多了，这个时候将询问分到左边即可。</li>
+<li>否则，小于等于 $mid$ 仍然满足不了 $k$ 个，那么我们将它分到右边，**并且将 $k$ 减去 $t$**。这就是我们刚刚着重讲的那个点。</li>
+</ul>
+</li>
+</ul>
+<p>至于记录答案，我们直接在 $l&#x3D;r$ 的时候枚举所有的 $i\in [L,R]$，如果 $i$ 操作是询问，就直接把答案赋为 $l$ 即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> L,<span class="type">int</span> R,<span class="type">int</span> l,<span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(R &lt; L)	<span class="keyword">return</span> ;</span><br><span class="line">    <span class="keyword">if</span>(l == r)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=L;i&lt;=R;++i)</span><br><span class="line">            <span class="keyword">if</span>(op[i].type == <span class="number">2</span>)	op[i].ans = l;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> mid = l+r&gt;&gt;<span class="number">1</span>, cnt1 = <span class="number">0</span>, cnt2 = <span class="number">0</span>, cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=L;i&lt;=R;++i)</span><br><span class="line">        <span class="keyword">if</span>(op[i].type == <span class="number">2</span>)&#123;</span><br><span class="line">        	<span class="keyword">if</span>(cnt &lt; op[i].c)	op[i].c -= cnt, q[++cnt2] = op[i];</span><br><span class="line">            <span class="keyword">else</span>	p[++cnt1] = op[i];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(op[i].c &lt;= mid)	++cnt, p[++cnt1] = op[i];</span><br><span class="line">            <span class="keyword">else</span>	q[++cnt2] = op[i];</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=cnt1;++i)	op[i+L<span class="number">-1</span>] = p[i];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=cnt2;++i)	op[i+L+cnt1<span class="number">-1</span>] = q[i];</span><br><span class="line">    <span class="built_in">solve</span>(L, L+cnt1<span class="number">-1</span>, l, mid), <span class="built_in">solve</span>(L+cnt2, R, mid+<span class="number">1</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="静态区间第-k-小"><a href="#静态区间第-k-小" class="headerlink" title="静态区间第 $k$ 小"></a>静态区间第 $k$ 小</h2><p>这里虽然是静态，但是每一次查询的区间并不一样，因此我们需要记录一个类似于前缀和的东西来帮助我们完成这个询问。</p>
+<h3 id="可持久化线段树"><a href="#可持久化线段树" class="headerlink" title="可持久化线段树"></a>可持久化线段树</h3><p>我们使用动态开点线段树，然后对于每个位置 $i$ 都开一个线段树，它是基于第 $i-1$ 棵线段树的基础上加上一个点产生的。注意到单点修改只会有 $\log n$ 次，然后在查询区间的时候我们使用 $s_r-s_{l-1}$ 的差分方法就可以直接在线段树上求区间 $kth$ 了。 </p>
+<h3 id="二分答案"><a href="#二分答案" class="headerlink" title="二分答案"></a>二分答案</h3><p>同样地，我们可以使用二分来解决问题。根据上面的思路，我们不难想到这里区间查询的解题思路：</p>
+<p>首先，修改是没有用的，我们直接接着全局静态查询的思路来。全局静态查询需要我们知道全局小于等于它的是多少，但是这里我们改成了区间，这就可以了。如果不能理解，我们可以先考虑如果只有一个询问怎么二分，显然地，我们直接枚举 $mid$ 并询问 $\le mid$ 的有多少个，然后根据这个结果进行缩小区间操作即可。询问多了就把询问分流即可。</p>
+<p>但是我们注意到有一个区间求小于等于某个数的数有多少个，这我们使用树状数组对于每个区间每次加入后再清空，这就显得很冗杂，因为我们明明完全可以在主席书上直接二分来减少一个 $\log$ 的，但是不急，虽然这个方法在现在开起来并不优，但是这方法具有很高的可拓展性。这是因为给定初始数组可以被看做在刚开始进行了 $n$ 次修改。而我们二分的时候把修改放到询问中间来，这就可以完全兼容后面待修的做法。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">BIT</span>&#123;</span><br><span class="line">    <span class="type">int</span> b[N];</span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> lowbit(x) (x&amp;-x)</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> k)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x)</span></span>;</span><br><span class="line">    <span class="meta">#<span class="keyword">undef</span> lowbit</span></span><br><span class="line">&#125;t;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> L,<span class="type">int</span> R,<span class="type">int</span> l,<span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(R &lt; L)	<span class="keyword">return</span> ;</span><br><span class="line">    <span class="keyword">if</span>(l == r)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=L;i&lt;=R;++i)</span><br><span class="line">            op[i].ans = l;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> mid = l+r&gt;&gt;<span class="number">1</span>, cnt1 = <span class="number">0</span>, cnt2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=L;i&lt;=R;++i)</span><br><span class="line">        <span class="keyword">if</span>(op[i].type == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(op[i].c &lt;= mid)	<span class="built_in">update</span>(op[i].loca, <span class="number">1</span>), p[++cnt1] = op[i];</span><br><span class="line">            <span class="keyword">else</span>	q[++cnt2] = op[i];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="type">int</span> t = <span class="built_in">query</span>(op[i].r) - <span class="built_in">query</span>(op[i].l<span class="number">-1</span>);</span><br><span class="line">            <span class="keyword">if</span>(t &gt;= op[i].c)	p[++cnt1] = op[i];</span><br><span class="line">            <span class="keyword">else</span>	op[i].c -= t, q[++cnt2] = op[i];</span><br><span class="line">        &#125;</span><br><span class="line">   	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=cnt1;++i)</span><br><span class="line">        <span class="keyword">if</span>(op[i].type == <span class="number">1</span>)	<span class="built_in">update</span>(op[i].loca, <span class="number">-1</span>);</span><br><span class="line">   	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=cnt1;++i)	op[i+L<span class="number">-1</span>] = p[i];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=cnt2;++i)	op[i+L+cnt1<span class="number">-1</span>] = q[i];</span><br><span class="line">    <span class="built_in">solve</span>(L, L+cnt1<span class="number">-1</span>, l, mid), <span class="built_in">solve</span>(L+cnt1, R, mid+<span class="number">1</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，值得注意的是每次进入函数我们需要判断 $R&lt;L$，这是因为如果所有的操作都被分配到一边，那么就会出现 <code>solve(L, L-1, l, mid)</code> 或者 <code>solve(R+1, R, mid+1, r)</code>，如果不进行判断就会产生错误。</p>
+<h2 id="动态区间第-k-小"><a href="#动态区间第-k-小" class="headerlink" title="动态区间第 $k$ 小"></a>动态区间第 $k$ 小</h2><p>于是我们来看看终极问题：<strong>动态区间第 $k$ 小</strong>。这就需要 “<strong>解决动态区间第 $k$ 的三种方法</strong>”。</p>
+<h3 id="Sol1"><a href="#Sol1" class="headerlink" title="Sol1"></a>Sol1</h3><p>我们仍然可以使用数据结构草过去。但是这次的数据结构就十分高级了：树套树。</p>
+<p>这里，我们使用树状数组套线段树。</p>
+<h4 id="修改操作"><a href="#修改操作" class="headerlink" title="修改操作"></a>修改操作</h4><p>因为外层是树状数组，我们在 $x$ 这个地方把 $a_x$ 变为 $y$ 这个操作，会影响到所有在 <code>for(int i=x;i&lt;=n;i+=lowbit(i))</code> 这个语句中遍历到的 $i$，因此，在这些地方我们都需要对线段树进行修改。具体地，这个线段树是值域线段树，我们把原来的 $a_x$ 删除，然后再加上 $y$ 即可。因此，一次操作需要操作 $\log n$ 次线段树，也就是复杂度为 $O(\log ^2 n)$。</p>
+<h4 id="查询操作"><a href="#查询操作" class="headerlink" title="查询操作"></a>查询操作</h4><p>同样地，根据树状数组的定义，我们想要知道 $[1,r]$ 中有多少个数，我们就需要加上所有 <code>for(int i=r;i;i-=lowbit(i))</code> 语句遍历到的 $i$ 所在线段树的数。然后，我们还要知道 $[1,l-1]$ 有多少个数，把上面的 $r$ 改成 $l-1$ 即可。然后我们把这两个值相减，就能够得到当前的节点上 $[l,r]$ 有多少个数。</p>
+<p>于是，我们仍然在线段树上二分，但是我们这次同时在 $2\log n$ 棵线段树上进行二分，然后每一次我们需要知道它们的左儿子有多少个数，于是我们需要 $O(\log n)$ 求出这个 $sum$ 来跟 $k$ 作比较。这就完成了一次二分的过程，然后我们就直接继续二分即可。这样，一次查询的复杂度就是 $O(log^2 n)$ 的。</p>
+<p>这样，我们就得到了一个 $O((n+q)log^2 n)$ 的优秀做法。它本质上是使用外层的树状数组来维护数列，然后内层线段树来完成查询操作。但是，它的空间复杂度实在是太高了，因为有可能有 $O(n)$ 次修改，然后我们每一次需要修改 $O(\log n)$ 棵线段树，每棵线段树有可能修改 $O(\log n)$ 个节点，这样空间复杂度达到了 $O(n\log ^2 n)$，令我无法接受（当然题目可以接受）。</p>
+<h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n, a[N], b[N&lt;&lt;<span class="number">1</span>], m, cnt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">opt</span>&#123;</span><br><span class="line">	<span class="type">char</span> type;</span><br><span class="line">	<span class="type">int</span> l, r, k;</span><br><span class="line">&#125;op[N];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> root[N], s[N&lt;&lt;<span class="number">7</span>], ls[N&lt;&lt;<span class="number">7</span>], rs[N&lt;&lt;<span class="number">7</span>], idx;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> &amp;p,<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> x,<span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!p)	p = ++idx;</span><br><span class="line">	s[p] += k;</span><br><span class="line">	<span class="keyword">if</span>(l == r)	<span class="keyword">return</span> ;</span><br><span class="line">	<span class="type">int</span> mid = l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(x &lt;= mid)	<span class="built_in">update</span>(ls[p], l, mid, x, k);</span><br><span class="line">	<span class="keyword">else</span>	<span class="built_in">update</span>(rs[p], mid+<span class="number">1</span>, r, x, k);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> lowbit(x) (x&amp;-x)</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">modify</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> v,<span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=x;i&lt;=n;i+=<span class="built_in">lowbit</span>(i))</span><br><span class="line">		<span class="built_in">update</span>(root[i], <span class="number">1</span>, cnt, v, k);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> n1, n2, t1[N], t2[N];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">kth</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l == r)	<span class="keyword">return</span> l;</span><br><span class="line">	<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n1;++i)	sum -= s[ls[t1[i]]];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n2;++i)	sum += s[ls[t2[i]]];</span><br><span class="line">	<span class="type">int</span> mid = l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(sum &lt; k)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n1;++i)	t1[i] = rs[t1[i]];</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n2;++i)	t2[i] = rs[t2[i]];</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">kth</span>(mid+<span class="number">1</span>, r, k - sum);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n1;++i)	t1[i] = ls[t1[i]];</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n2;++i)	t2[i] = ls[t2[i]];</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">kth</span>(l, mid, k);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">	n1 = n2 = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=r;i;i-=<span class="built_in">lowbit</span>(i))	t2[++n2] = root[i];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=l<span class="number">-1</span>;i;i-=<span class="built_in">lowbit</span>(i))	t1[++n1] = root[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>), cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)	cin&gt;&gt;a[i], b[++cnt] = a[i];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;++i)&#123;</span><br><span class="line">		cin&gt;&gt;op[i].type;</span><br><span class="line">		<span class="keyword">if</span>(op[i].type == <span class="string">&#x27;C&#x27;</span>)&#123;</span><br><span class="line">			cin&gt;&gt;op[i].l&gt;&gt;op[i].k;</span><br><span class="line">			b[++cnt] = op[i].k;</span><br><span class="line">		&#125;<span class="keyword">else</span>	cin&gt;&gt;op[i].l&gt;&gt;op[i].r&gt;&gt;op[i].k;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">sort</span>(b+<span class="number">1</span>, b+<span class="number">1</span>+cnt);</span><br><span class="line">	cnt = <span class="built_in">unique</span>(b+<span class="number">1</span>, b+<span class="number">1</span>+cnt) - b - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)	a[i] = <span class="built_in">lower_bound</span>(b+<span class="number">1</span>, b+<span class="number">1</span>+cnt, a[i]) - b;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;++i)</span><br><span class="line">		<span class="keyword">if</span>(op[i].type == <span class="string">&#x27;C&#x27;</span>)	op[i].k = <span class="built_in">lower_bound</span>(b+<span class="number">1</span>, b+<span class="number">1</span>+cnt, op[i].k) - b;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)	<span class="built_in">modify</span>(i, a[i], <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(op[i].type == <span class="string">&#x27;C&#x27;</span>)&#123;</span><br><span class="line">			<span class="built_in">modify</span>(op[i].l, a[op[i].l], <span class="number">-1</span>);</span><br><span class="line">			a[op[i].l] = op[i].k;</span><br><span class="line">			<span class="built_in">modify</span>(op[i].l, a[op[i].l], <span class="number">1</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span>	<span class="built_in">init</span>(op[i].l, op[i].r, op[i].k), cout&lt;&lt;b[<span class="built_in">kth</span>(<span class="number">1</span>, cnt, op[i].k)]&lt;&lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><del>代码还是不难写的。</del></p>
+<h3 id="Sol2"><a href="#Sol2" class="headerlink" title="Sol2"></a>Sol2</h3><p>另外，如果你十分熟悉 $\text{Ynoi}$ 的题目，这道题可以使用分块来完成。</p>
+<p><del>谁说就没有分块套分块呢。</del></p>
+<p>按照树套树的思路，我们来一个分块套分块就可以了，具体地细节我还没写（bushi。</p>
+<h3 id="Sol3"><a href="#Sol3" class="headerlink" title="Sol3"></a>Sol3</h3><p>整体二分。我们直接将第二个问题：动态区间 $kth$ 中的操作改一下，再查询中加入修改操作即可。</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">Wu Yuze</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/08/11/%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86/">http://example.com/2024/08/11/%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/">算法笔记</a></div><div class="post_share"><div class="social-share" data-image="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/08/11/01trie%20%E8%BF%9B%E9%98%B6/" title="01-trie 进阶"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">01-trie 进阶</div></div></a></div><div class="next-post pull-right"><a href="/2024/08/11/2024SDSC%20Day%205%20Sol/" title="2024 SDSC Day 5 Sol"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">2024 SDSC Day 5 Sol</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2024/08/11/01trie%20%E8%BF%9B%E9%98%B6/" title="01-trie 进阶"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-11</div><div class="title">01-trie 进阶</div></div></a></div><div><a href="/2024/05/23/01trie/" title="01-trie"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-23</div><div class="title">01-trie</div></div></a></div><div><a href="/2024/03/25/DUJiao%20Sum/" title="杜教筛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-25</div><div class="title">杜教筛</div></div></a></div><div><a href="/2024/05/05/FFT/" title="快速傅里叶变换"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-05</div><div class="title">快速傅里叶变换</div></div></a></div><div><a href="/2024/08/11/MoTeam/" title="莫队"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-11</div><div class="title">莫队</div></div></a></div><div><a href="/2024/07/01/Mobius%20Inversion/" title="莫比乌斯反演"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-01</div><div class="title">莫比乌斯反演</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Wu Yuze</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86"><span class="toc-number">1.</span> <span class="toc-text">整体二分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%85%A8%E5%B1%80%E7%AC%AC-k-%E5%B0%8F"><span class="toc-number">1.1.</span> <span class="toc-text">静态全局第 $k$ 小</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ques-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Ques 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ques-2"><span class="toc-number">1.1.2.</span> <span class="toc-text">Ques 2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%85%A8%E5%B1%80%E7%AC%AC-k-%E5%B0%8F"><span class="toc-number">1.2.</span> <span class="toc-text">动态全局第 $k$ 小</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">Sol 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol-2"><span class="toc-number">1.2.2.</span> <span class="toc-text">Sol 2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%8C%BA%E9%97%B4%E7%AC%AC-k-%E5%B0%8F"><span class="toc-number">1.3.</span> <span class="toc-text">静态区间第 $k$ 小</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E7%BA%BF%E6%AE%B5%E6%A0%91"><span class="toc-number">1.3.1.</span> <span class="toc-text">可持久化线段树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E7%AD%94%E6%A1%88"><span class="toc-number">1.3.2.</span> <span class="toc-text">二分答案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%8C%BA%E9%97%B4%E7%AC%AC-k-%E5%B0%8F"><span class="toc-number">1.4.</span> <span class="toc-text">动态区间第 $k$ 小</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol1"><span class="toc-number">1.4.1.</span> <span class="toc-text">Sol1</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">修改操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">查询操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Code"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">Code</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol2"><span class="toc-number">1.4.2.</span> <span class="toc-text">Sol2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sol3"><span class="toc-number">1.4.3.</span> <span class="toc-text">Sol3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">例题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/01trie%20%E8%BF%9B%E9%98%B6/" title="01-trie 进阶">01-trie 进阶</a><time datetime="2024-08-11T13:48:21.000Z" title="Created 2024-08-11 21:48:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86/" title="整体二分">整体二分</a><time datetime="2024-08-11T13:47:21.000Z" title="Created 2024-08-11 21:47:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/2024SDSC%20Day%205%20Sol/" title="2024 SDSC Day 5 Sol">2024 SDSC Day 5 Sol</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/Beakjoon19523/" title="Beakjoon19523 Sol">Beakjoon19523 Sol</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/MoTeam/" title="莫队">莫队</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Wu Yuze</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div><div id="footer-banner"><div class="footer-banner-links"><div class="footer-banner-left"><span id="footer-banner-tips"></span><script type="text/javascript" src="https://cdn.bootcss.com/typed.js/2.0.5/typed.js"></script><script type="text/javascript">var typed = new Typed("#footer-banner-tips", {
+            strings: ['你会发现世界新的尽头，下雨会有彩色的洋流，珊瑚里有被浇灌的梦，街角有海獭等着你的糖球','可是啊，我却，却愿意去相信，最渺小最温柔最柔软最无畏的你','借一方三九天里咧咧暖阳，熔这茫茫人间刺骨凉','也路过，旋转的星空；发现光颜色万种，风吹来云在翻涌，都抵不过你的笑容','我也想，能陪你一起走啊，直到这世界崩塌。可是啊，走过长夜的你，不再需要被牵挂','有些遗憾要学会放下，生活无需太重的行囊','既然相遇始终来自于时光的馈赠，那么离别时也一定要微笑着回忆放心中','可以哭了，可以笑着说结束了','也敬你一杯，因为值得','一定是你来时太小心，怕我再想起你','无名的人啊，我敬你一杯酒，敬你的沉默，和每一声怒吼','我不再迷茫，思念是唯一的方向。满天的星光，有一颗是你的愿望。','May all the bueaty be blessed.'],
+            startDelay: 200,
+            backDelay: 2000,
+            typeSpeed: 100,
+            loop: true,
+            backSpeed: 20
+            })
+</script></div><div class="footer-banner-right"><a class="footer-banner-link" href="/rss/" data-pjax-state="data-pjax-state">订阅</a><a class="footer-banner-link" href="/update/" data-pjax-state="data-pjax-state">主题</a><a class="footer-banner-link" href="https://www.beian.miit.gov.cn/" target="_blank">粤 ICP 备 20043865 号</a></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="E=mc^2,lol,Hello, world!,e^iπ+1=0,F=ma,AC,Na" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh_CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>01-trie | Helloworldwuyuze's Blog</title><meta name="author" content="Wu Yuze"><meta name="copyright" content="Wu Yuze"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="01-Trie介绍$01-Trie$ 是一类解决有关异或问题的工具。它支持插入、删除、全局 $+1$、求异或和、求最大异或值的问题。 异或和 $01-Trie$插入，删除操作首先我们明确 $01-Trie$ 的基本形态。它类似于一个动态开点线段树。每个节点有两个儿子 $t_{p,0}$ 和 $t_{p,1}$ 分别表示下一位是 $0&#x2F;1$ 的编号是多少。这里我们的 $Trie$ 树维护的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="01-trie">
+<meta property="og:url" content="http://example.com/2024/05/23/01trie/index.html">
+<meta property="og:site_name" content="Helloworldwuyuze&#39;s Blog">
+<meta property="og:description" content="01-Trie介绍$01-Trie$ 是一类解决有关异或问题的工具。它支持插入、删除、全局 $+1$、求异或和、求最大异或值的问题。 异或和 $01-Trie$插入，删除操作首先我们明确 $01-Trie$ 的基本形态。它类似于一个动态开点线段树。每个节点有两个儿子 $t_{p,0}$ 和 $t_{p,1}$ 分别表示下一位是 $0&#x2F;1$ 的编号是多少。这里我们的 $Trie$ 树维护的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406">
+<meta property="article:published_time" content="2024-05-23T13:46:21.000Z">
+<meta property="article:modified_time" content="2024-08-11T13:47:54.329Z">
+<meta property="article:author" content="Wu Yuze">
+<meta property="article:tag" content="算法笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406"><link rel="shortcut icon" href="/img/jwz1.jpg"><link rel="canonical" href="http://example.com/2024/05/23/01trie/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '01-trie',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2024-08-11 21:47:54'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Helloworldwuyuze's Blog" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Helloworldwuyuze's Blog"><img class="site-icon" src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image"/><span class="site-name">Helloworldwuyuze's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">01-trie</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-05-23T13:46:21.000Z" title="Created 2024-05-23 21:46:21">2024-05-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-11T13:47:54.329Z" title="Updated 2024-08-11 21:47:54">2024-08-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="01-trie"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="01-Trie"><a href="#01-Trie" class="headerlink" title="01-Trie"></a>01-Trie</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>$01-Trie$ 是一类解决有关异或问题的工具。它支持插入、删除、全局 $+1$、求异或和、求最大异或值的问题。</p>
+<h2 id="异或和-01-Trie"><a href="#异或和-01-Trie" class="headerlink" title="异或和 $01-Trie$"></a>异或和 $01-Trie$</h2><h3 id="插入，删除操作"><a href="#插入，删除操作" class="headerlink" title="插入，删除操作"></a>插入，删除操作</h3><p>首先我们明确 $01-Trie$ 的基本形态。它类似于一个动态开点线段树。每个节点有两个儿子 $t_{p,0}$ 和 $t_{p,1}$ 分别表示下一位是 $0&#x2F;1$ 的编号是多少。这里我们的 $Trie$ 树维护的二进制串是从最低位开始的。而我们需要维护三个信息：</p>
+<ul>
+<li>$t_{p,0&#x2F;1}$，表示下一位是 $0&#x2F;1$ 时的儿子编号是多少。这与普通的 $Trie$ 相同。</li>
+<li>$w_p$，表示最后落在 $p$ 子树内的数有多少个。也可以理解为经过 $(p,fa_p)$ 这条边的数的数量。</li>
+<li>$sum_p$，表示 $p$ 子树内的异或和。注意这里以 $p$ 为根节点就不需要考虑 $p$ 以上的部分，也就是原来 $11010$ 的东西现在可能是 $01011,1011,011,11$ 或者 $1$。</li>
+</ul>
+<p>对于最终的异或和的答案，我们只关心在某一条 $1$ 边，它的 $w$ 是多少。因为只有权值是 $1$ 且经过次数为奇数的边才会对答案产生贡献。那么不难想到：</p>
+<p>$$sum_{p}&#x3D;sum_{t_{p,0}}\times2+sum_{t_{p,1}}*2+(w_{t_{p,1}}&amp;1)$$</p>
+<p>这表示左儿子和右儿子的异或和分别乘以二，然后看 $1$ 边的奇偶情况选择加不加。</p>
+<p>于是代码也很简单了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ls(p) t[p][0]</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> rs(p) t[p][1]</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">push_up</span><span class="params">(<span class="type">int</span> p)</span></span>&#123;</span><br><span class="line">	w[p]=sum[p]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">ls</span>(p))	w[p]+=w[<span class="built_in">ls</span>(p)], sum[p]^=sum[<span class="built_in">ls</span>(p)]&lt;&lt;<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">rs</span>(p))	w[p]+=w[<span class="built_in">rs</span>(p)], sum[p]^=(sum[<span class="built_in">rs</span>(p)]&lt;&lt;<span class="number">1</span>)|(w[<span class="built_in">rs</span>(p)]&amp;<span class="number">1</span>);</span><br><span class="line">	w[p]&amp;=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> &amp;p,<span class="type">int</span> x,<span class="type">int</span> dep)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!p)	p=++idx;</span><br><span class="line">	<span class="keyword">if</span>(dep&gt;MAXN)	<span class="keyword">return</span> (<span class="type">void</span>)(++w[p]);</span><br><span class="line">	<span class="built_in">update</span>(t[p][x&amp;<span class="number">1</span>],x&gt;&gt;<span class="number">1</span>,dep+<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">push_up</span>(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意，删除操作其实和增加没有区别。因为再增加一次就相当于在异或和当中把它删除掉了。</p>
+<h3 id="全局-1"><a href="#全局-1" class="headerlink" title="全局 $+1$"></a>全局 $+1$</h3><p>首先我们观察二进制下加一的规律。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00000</span> + <span class="number">1</span> = <span class="number">00001</span></span><br><span class="line"><span class="number">00111</span> + <span class="number">1</span> = <span class="number">01000</span></span><br><span class="line"><span class="number">10101</span> + <span class="number">1</span> = <span class="number">10110</span></span><br></pre></td></tr></table></figure>
+
+<p>相信大家已经观察出来了，对于某一位 $i$，它 $+1$ 就代表它由 $0\to 1$ 或者 $1\to 0$，而如果它的下一位仍然是 $1$，就继续到下一位进行操作。</p>
+<p>这样就不难得出我们的代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">alladd</span><span class="params">(<span class="type">int</span> p)</span></span>&#123;</span><br><span class="line">	<span class="built_in">swap</span>(<span class="built_in">ls</span>(p), <span class="built_in">rs</span>(p));</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">ls</span>(p))	<span class="built_in">alladd</span>(<span class="built_in">ls</span>(p));</span><br><span class="line">	<span class="built_in">push_up</span>(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h3><p>其实和线段树的合并都差不多，分为以下几个步骤：</p>
+<ol>
+<li>如果 $p$ 或者 $q$ 为空，就直接返回 $p+q$。( $coduck$祖传)</li>
+<li><code>w[p]+=w[q], sum[p]^=sum[q];</code></li>
+<li>对左、右儿子继续进行合并操作。</li>
+</ol>
+<p>复杂度应该仍然是均摊 $n\log n$。注意这里不需要再 <code>push_up</code> 来更新了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> p,<span class="type">int</span> q)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!p||!q)	<span class="keyword">return</span> p+q;</span><br><span class="line">	w[p]+=w[q], sum[p]^=sum[q];</span><br><span class="line">	<span class="built_in">ls</span>(p)=<span class="built_in">merge</span>(<span class="built_in">ls</span>(p),<span class="built_in">ls</span>(q)), <span class="built_in">rs</span>(p)=<span class="built_in">merge</span>(<span class="built_in">rs</span>(p),<span class="built_in">rs</span>(q));</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最大异或路径-01-Trie"><a href="#最大异或路径-01-Trie" class="headerlink" title="最大异或路径 $01-Trie$"></a>最大异或路径 $01-Trie$</h2><p>问题是给定序列，求</p>
+<p>$$\max\limits_{i&#x3D;1,j&#x3D;1}^n a_i \oplus a_j$$</p>
+<p>我们考虑便利 $i$，然后执行下列操作：</p>
+<ul>
+<li>在字典树中查询可以与 $i$ 组成的最大异或和的数，算入答案。</li>
+<li>将 $i$ 插入字典树。</li>
+</ul>
+<p>关键在于如何查询。</p>
+<h3 id="最大异或"><a href="#最大异或" class="headerlink" title="最大异或"></a>最大异或</h3><p>这个 $01-Trie$ 是从最高位开始插入的。我们一般设 <code>MAXN=31</code>。</p>
+<p>插入与普通 $Trie$ 基本一样，但是，在查询的时候，我们需要自己选择路径走。我们设当前查询的数的二进制是 ${b_n}$，于是：</p>
+<ul>
+<li>如果 $t_{p,!b_i}$ 存在，那么进入 $t_{p,!b_i}$ 并且将 <code>1&lt;&lt;dep-1</code> 计入答案。</li>
+<li>否则，如果 $t_{p,b_i}$ 存在，那么进入 $t_{p,b_i}$。</li>
+<li>否则，返回 <code>ans</code>。</li>
+</ul>
+<p>因为我们知道 $\sum\limits_{i&#x3D;1}^n 2^i&lt; 2^{n+1}$，因此我们随时要保证最高位最大才能够保证最后结果最大。因此就有这上述的贪心做法。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(_2 x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>, dep=<span class="number">31</span>, ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">31</span>;++i, --dep)</span><br><span class="line">		<span class="keyword">if</span>(t[p][!x.b[i]])	ans+=(<span class="number">1</span>&lt;&lt;dep<span class="number">-1</span>), p=t[p][!x.b[i]];</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(t[p][x.b[i]])	p=t[p][x.b[i]];</span><br><span class="line">		<span class="keyword">else</span>	<span class="keyword">return</span> ans;</span><br><span class="line">	<span class="keyword">return</span> ans;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">Wu Yuze</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/05/23/01trie/">http://example.com/2024/05/23/01trie/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/">算法笔记</a></div><div class="post_share"><div class="social-share" data-image="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/05/23/5.21Contest/" title="5 月 21 号模拟赛题解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">5 月 21 号模拟赛题解</div></div></a></div><div class="next-post pull-right"><a href="/2024/05/05/FFT/" title="快速傅里叶变换"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">快速傅里叶变换</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2024/08/11/01trie%20%E8%BF%9B%E9%98%B6/" title="01-trie 进阶"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-11</div><div class="title">01-trie 进阶</div></div></a></div><div><a href="/2024/03/25/DUJiao%20Sum/" title="杜教筛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-25</div><div class="title">杜教筛</div></div></a></div><div><a href="/2024/05/05/FFT/" title="快速傅里叶变换"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-05</div><div class="title">快速傅里叶变换</div></div></a></div><div><a href="/2024/08/11/MoTeam/" title="莫队"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-11</div><div class="title">莫队</div></div></a></div><div><a href="/2024/07/01/Mobius%20Inversion/" title="莫比乌斯反演"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-01</div><div class="title">莫比乌斯反演</div></div></a></div><div><a href="/2024/05/05/NTT/" title="快速数论变换"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-05</div><div class="title">快速数论变换</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/live/d13c4669735a495f15c59bfca75b437c.mp4.jpg?x-oss-process=image/resize,type_6,m_fill,h_228,w_406" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Wu Yuze</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#01-Trie"><span class="toc-number">1.</span> <span class="toc-text">01-Trie</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E5%92%8C-01-Trie"><span class="toc-number">1.2.</span> <span class="toc-text">异或和 $01-Trie$</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%EF%BC%8C%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.1.</span> <span class="toc-text">插入，删除操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">全局 $+1$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%88%E5%B9%B6"><span class="toc-number">1.2.3.</span> <span class="toc-text">合并</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E8%B7%AF%E5%BE%84-01-Trie"><span class="toc-number">1.3.</span> <span class="toc-text">最大异或路径 $01-Trie$</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96"><span class="toc-number">1.3.1.</span> <span class="toc-text">最大异或</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/01trie%20%E8%BF%9B%E9%98%B6/" title="01-trie 进阶">01-trie 进阶</a><time datetime="2024-08-11T13:48:21.000Z" title="Created 2024-08-11 21:48:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/%E6%95%B4%E4%BD%93%E4%BA%8C%E5%88%86/" title="整体二分">整体二分</a><time datetime="2024-08-11T13:47:21.000Z" title="Created 2024-08-11 21:47:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/2024SDSC%20Day%205%20Sol/" title="2024 SDSC Day 5 Sol">2024 SDSC Day 5 Sol</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/Beakjoon19523/" title="Beakjoon19523 Sol">Beakjoon19523 Sol</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/MoTeam/" title="莫队">莫队</a><time datetime="2024-08-11T13:46:21.000Z" title="Created 2024-08-11 21:46:21">2024-08-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Wu Yuze</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div><div id="footer-banner"><div class="footer-banner-links"><div class="footer-banner-left"><span id="footer-banner-tips"></span><script type="text/javascript" src="https://cdn.bootcss.com/typed.js/2.0.5/typed.js"></script><script type="text/javascript">var typed = new Typed("#footer-banner-tips", {
+            strings: ['你会发现世界新的尽头，下雨会有彩色的洋流，珊瑚里有被浇灌的梦，街角有海獭等着你的糖球','可是啊，我却，却愿意去相信，最渺小最温柔最柔软最无畏的你','借一方三九天里咧咧暖阳，熔这茫茫人间刺骨凉','也路过，旋转的星空；发现光颜色万种，风吹来云在翻涌，都抵不过你的笑容','我也想，能陪你一起走啊，直到这世界崩塌。可是啊，走过长夜的你，不再需要被牵挂','有些遗憾要学会放下，生活无需太重的行囊','既然相遇始终来自于时光的馈赠，那么离别时也一定要微笑着回忆放心中','可以哭了，可以笑着说结束了','也敬你一杯，因为值得','一定是你来时太小心，怕我再想起你','无名的人啊，我敬你一杯酒，敬你的沉默，和每一声怒吼','我不再迷茫，思念是唯一的方向。满天的星光，有一颗是你的愿望。','May all the bueaty be blessed.'],
+            startDelay: 200,
+            backDelay: 2000,
+            typeSpeed: 100,
+            loop: true,
+            backSpeed: 20
+            })
+</script></div><div class="footer-banner-right"><a class="footer-banner-link" href="/rss/" data-pjax-state="data-pjax-state">订阅</a><a class="footer-banner-link" href="/update/" data-pjax-state="data-pjax-state">主题</a><a class="footer-banner-link" href="https://www.beian.miit.gov.cn/" target="_blank">粤 ICP 备 20043865 号</a></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="E=mc^2,lol,Hello, world!,e^iπ+1=0,F=ma,AC,Na" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
