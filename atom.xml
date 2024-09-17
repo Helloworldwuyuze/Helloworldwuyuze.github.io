@@ -284,28 +284,6 @@
   </entry>
   
   <entry>
-    <title>P3557 题解</title>
-    <link href="http://example.com/2024/07/01/P3557%E9%A2%98%E8%A7%A3/"/>
-    <id>http://example.com/2024/07/01/P3557%E9%A2%98%E8%A7%A3/</id>
-    <published>2024-07-01T13:30:21.000Z</published>
-    <updated>2024-07-01T13:32:14.929Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="P3557-题解"><a href="#P3557-题解" class="headerlink" title="P3557 题解"></a>P3557 题解</h1><h2 id="Des"><a href="#Des" class="headerlink" title="Des"></a>Des</h2><p>给定一张无向图，其中有 $n$ 个点 $m$ 条边，保证存在一个长度为 $k$ 的序列 $p_k$ 使得标记 $p_k$ 即 $p_k$ 一步能够到达的地方之后，所有的点都被标记。现在要求标记两步之内能够到达的点，求一种构造的方法使得所有点被标记。</p><h2 id="Sol"><a href="#Sol" class="headerlink" title="Sol"></a>Sol</h2><p>首先摆出结论：</p><blockquote><p>对于一张图，我们计 <code>vis[x]</code> 表示节点 $x$ 的标记情况。每一次更新的时候，我们找到一个 $x$ 使得 <code>vis[x]==false</code>，然后标记所有 $x$ 两步之内能够到达的点，最后统计一下我们进行了多少次操作即可。</p></blockquote><p>下面我们来 <strong>证明这个 <del>显而易见</del></strong> 的结论：</p><p>首先，对于原图，我们知道，对于任意一个点 $x$，总存在 $i\in [1,k]$ 使得 $\operatorname{dis}(x,p_i)&#x3D;1$ 或 $x&#x3D;p_i$。</p><ul><li>如果 $\operatorname{dis}(x,p_i)&#x3D;1$，则我们在这里标记一定会在距离为 $1$ 的地方标记到 $p_i$，进而标记 $p_i$ 原来标记到的点。这样显然不劣。</li><li>如果 $x&#x3D;p_i$，那么同样地，$x$ 可以标记到 $p_i$ 原来标记得到和一些原来标记不到的点，因此也是不劣的。</li></ul><p>又，对于每一个新标记的点，至少会覆盖到一个 $p_i$ 使得之后不需要再标记。因此新的标记的点的数量总不超过 $k$。</p><p>于是我们就可以遍历 $1-n$，遇到没有标记的就标记一下。但是注意要遍历所有的两个距离之内能够到达的点，否则可能会因为标记卡住了而无法继续标记新的节点。</p><p>但这样复杂度为什么是对的呢？</p><p>我们考虑对于一个点标记点 $p_i$，之后 $p_i$ 和 $p_i$ 一步能够到达的点会遍历一次所有的边。而它们周围一步能够到达的点都已经都标记完了，下一次再遍历到它们一定是距离标记点 $2$ 时。这时就不需要再遍历它们的边了。因此，每个点的边只会被遍历一次，这就保证了复杂度的正确性。</p><h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n, m, k, st[N];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; ans, g[N];</span><br><span class="line"><span class="type">bool</span> vis[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> st)</span></span>&#123;</span><br><span class="line">vis[x] = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">if</span>(st == <span class="number">2</span>)<span class="keyword">return</span> ;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> y:g[x])<span class="built_in">dfs</span>(y, st+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">cin.<span class="built_in">tie</span>(<span class="number">0</span>), cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>,x,y;i&lt;=m;++i)cin&gt;&gt;x&gt;&gt;y, g[x].<span class="built_in">pb</span>(y), g[y].<span class="built_in">pb</span>(x);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line"><span class="keyword">if</span>(!vis[i])ans.<span class="built_in">pb</span>(i), <span class="built_in">dfs</span>(i, <span class="number">0</span>);</span><br><span class="line">cout&lt;&lt;ans.<span class="built_in">size</span>()&lt;&lt;endl;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> x:ans)cout&lt;&lt;x&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">cout&lt;&lt;endl;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;P3557-题解&quot;&gt;&lt;a href=&quot;#P3557-题解&quot; class=&quot;headerlink&quot; title=&quot;P3557 题解&quot;&gt;&lt;/a&gt;P3557 题解&lt;/h1&gt;&lt;h2 id=&quot;Des&quot;&gt;&lt;a href=&quot;#Des&quot; class=&quot;headerlink&quot; ti</summary>
-      
-    
-    
-    
-    
-    <category term="题解笔记" scheme="http://example.com/tags/%E9%A2%98%E8%A7%A3%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
     <title>P1445 [Violet] 樱花 题解</title>
     <link href="http://example.com/2024/07/01/P1445%20[Violet]%20%E6%A8%B1%E8%8A%B1/"/>
     <id>http://example.com/2024/07/01/P1445%20[Violet]%20%E6%A8%B1%E8%8A%B1/</id>
@@ -318,6 +296,28 @@
       
       
     <summary type="html">&lt;h1 id=&quot;P1445-Violet-樱花-题解&quot;&gt;&lt;a href=&quot;#P1445-Violet-樱花-题解&quot; class=&quot;headerlink&quot; title=&quot;P1445 [Violet] 樱花 题解&quot;&gt;&lt;/a&gt;P1445 [Violet] 樱花 题解&lt;/h1&gt;&lt;h2 i</summary>
+      
+    
+    
+    
+    
+    <category term="题解笔记" scheme="http://example.com/tags/%E9%A2%98%E8%A7%A3%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>P3557 题解</title>
+    <link href="http://example.com/2024/07/01/P3557%E9%A2%98%E8%A7%A3/"/>
+    <id>http://example.com/2024/07/01/P3557%E9%A2%98%E8%A7%A3/</id>
+    <published>2024-07-01T13:30:21.000Z</published>
+    <updated>2024-07-01T13:32:14.929Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="P3557-题解"><a href="#P3557-题解" class="headerlink" title="P3557 题解"></a>P3557 题解</h1><h2 id="Des"><a href="#Des" class="headerlink" title="Des"></a>Des</h2><p>给定一张无向图，其中有 $n$ 个点 $m$ 条边，保证存在一个长度为 $k$ 的序列 $p_k$ 使得标记 $p_k$ 即 $p_k$ 一步能够到达的地方之后，所有的点都被标记。现在要求标记两步之内能够到达的点，求一种构造的方法使得所有点被标记。</p><h2 id="Sol"><a href="#Sol" class="headerlink" title="Sol"></a>Sol</h2><p>首先摆出结论：</p><blockquote><p>对于一张图，我们计 <code>vis[x]</code> 表示节点 $x$ 的标记情况。每一次更新的时候，我们找到一个 $x$ 使得 <code>vis[x]==false</code>，然后标记所有 $x$ 两步之内能够到达的点，最后统计一下我们进行了多少次操作即可。</p></blockquote><p>下面我们来 <strong>证明这个 <del>显而易见</del></strong> 的结论：</p><p>首先，对于原图，我们知道，对于任意一个点 $x$，总存在 $i\in [1,k]$ 使得 $\operatorname{dis}(x,p_i)&#x3D;1$ 或 $x&#x3D;p_i$。</p><ul><li>如果 $\operatorname{dis}(x,p_i)&#x3D;1$，则我们在这里标记一定会在距离为 $1$ 的地方标记到 $p_i$，进而标记 $p_i$ 原来标记到的点。这样显然不劣。</li><li>如果 $x&#x3D;p_i$，那么同样地，$x$ 可以标记到 $p_i$ 原来标记得到和一些原来标记不到的点，因此也是不劣的。</li></ul><p>又，对于每一个新标记的点，至少会覆盖到一个 $p_i$ 使得之后不需要再标记。因此新的标记的点的数量总不超过 $k$。</p><p>于是我们就可以遍历 $1-n$，遇到没有标记的就标记一下。但是注意要遍历所有的两个距离之内能够到达的点，否则可能会因为标记卡住了而无法继续标记新的节点。</p><p>但这样复杂度为什么是对的呢？</p><p>我们考虑对于一个点标记点 $p_i$，之后 $p_i$ 和 $p_i$ 一步能够到达的点会遍历一次所有的边。而它们周围一步能够到达的点都已经都标记完了，下一次再遍历到它们一定是距离标记点 $2$ 时。这时就不需要再遍历它们的边了。因此，每个点的边只会被遍历一次，这就保证了复杂度的正确性。</p><h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n, m, k, st[N];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; ans, g[N];</span><br><span class="line"><span class="type">bool</span> vis[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> st)</span></span>&#123;</span><br><span class="line">vis[x] = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">if</span>(st == <span class="number">2</span>)<span class="keyword">return</span> ;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> y:g[x])<span class="built_in">dfs</span>(y, st+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">cin.<span class="built_in">tie</span>(<span class="number">0</span>), cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>,x,y;i&lt;=m;++i)cin&gt;&gt;x&gt;&gt;y, g[x].<span class="built_in">pb</span>(y), g[y].<span class="built_in">pb</span>(x);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line"><span class="keyword">if</span>(!vis[i])ans.<span class="built_in">pb</span>(i), <span class="built_in">dfs</span>(i, <span class="number">0</span>);</span><br><span class="line">cout&lt;&lt;ans.<span class="built_in">size</span>()&lt;&lt;endl;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> x:ans)cout&lt;&lt;x&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">cout&lt;&lt;endl;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;P3557-题解&quot;&gt;&lt;a href=&quot;#P3557-题解&quot; class=&quot;headerlink&quot; title=&quot;P3557 题解&quot;&gt;&lt;/a&gt;P3557 题解&lt;/h1&gt;&lt;h2 id=&quot;Des&quot;&gt;&lt;a href=&quot;#Des&quot; class=&quot;headerlink&quot; ti</summary>
       
     
     
